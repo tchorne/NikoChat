@@ -1,0 +1,83 @@
+[gd_scene load_steps=7 format=3 uid="uid://btny33ucbo1xd"]
+
+[ext_resource type="Script" path="res://ConnectionManager.gd" id="1_onaeo"]
+[ext_resource type="Script" path="res://CharacterAnimator.gd" id="1_rcln1"]
+[ext_resource type="PackedScene" uid="uid://crsmixdrmjxm4" path="res://nodes/text_box.tscn" id="2_ddnru"]
+[ext_resource type="AudioStream" uid="uid://ckit2krbgy5l5" path="res://assets/talk.wav" id="3_4t47r"]
+[ext_resource type="Script" path="res://TextEdit.gd" id="4_21vyc"]
+[ext_resource type="FontFile" uid="uid://r80xo1dwaoqa" path="res://assets/TerminusTTF-Bold-4.49.3.ttf" id="4_j4ynn"]
+
+[node name="Main" type="Node"]
+
+[node name="Chat" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Character" type="Control" parent="Chat" node_paths=PackedStringArray("label", "portrait", "sound")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rcln1")
+label = NodePath("TextBox/RichTextLabel")
+portrait = NodePath("TextBox/Portrait")
+sound = NodePath("AudioStreamPlayer")
+
+[node name="TextBox" parent="Chat/Character" instance=ExtResource("2_ddnru")]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = -136.0
+offset_right = -33.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Chat/Character"]
+stream = ExtResource("3_4t47r")
+volume_db = -4.685
+pitch_scale = 1.08
+
+[node name="MessageSending" type="Control" parent="Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = -317.0
+offset_right = -33.0
+offset_bottom = -258.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TextEdit" type="TextEdit" parent="Chat/MessageSending"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_j4ynn")
+theme_override_font_sizes/font_size = 16
+wrap_mode = 1
+script = ExtResource("4_21vyc")
+
+[node name="ConnectionManager" type="Node" parent="."]
+script = ExtResource("1_onaeo")
+
+[connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="Chat/Character" method="_on_text_edit_message_sent"]
+[connection signal="server_connected" from="ConnectionManager" to="Chat/MessageSending/TextEdit" method="_on_connection_manager_server_connected"]
+[connection signal="server_disconnected" from="ConnectionManager" to="Chat/MessageSending/TextEdit" method="_on_connection_manager_server_disconnected"]
+[connection signal="server_response" from="ConnectionManager" to="Chat/Character" method="_on_connection_manager_server_response"]
+
+[editable path="Chat/Character/TextBox"]

@@ -6,7 +6,7 @@ Utilises [CharacterAI API by kramcat](https://github.com/kramcat/CharacterAI#rea
 
 ## 🚧 In Development🚧 
 
-☐ Implement visual interface
+✅ Implement visual interface
 
 ☐ Implement Python server
 

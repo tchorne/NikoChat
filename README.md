@@ -8,10 +8,10 @@ Utilises [CharacterAI API by kramcat](https://github.com/kramcat/CharacterAI#rea
 
 ✅ Implement visual interface
 
-☐ Implement Python server
+✅ Implement Python server
 
 ☐ Customisable settings within interface
 
-☐ Train emotion prediction from [this dataset](https://www.kaggle.com/datasets/pashupatigupta/emotion-detection-from-text/)
+✅ Utilise [emotion detection model](https://huggingface.co/cardiffnlp/twitter-roberta-base-emotion-multilabel-latest) to display facial expressions
 
-☐ Add settings configuration to assign images folders to specific emotions
+✅ Custom images can be assigned in save directory

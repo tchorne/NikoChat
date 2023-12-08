@@ -18,11 +18,15 @@ var speed = FAST_SPEED
 
 var emotion: String = ""
 
+func _ready():
+	thinking.get_node("Animation").play("thinking")
+
 func update_text(text: String):
 	if text.begins_with("<"):
-		emotion = text.substr(1, text.find(">"))
+		emotion = text.substr(1, text.find(">")).rstrip(">")
 		print("Emotion Detected: " + emotion)
-		text.trim_prefix("<" + emotion + ">")
+		text = text.trim_prefix("<" + emotion + ">")
+		
 	else:
 		emotion = "neutral"
 		
@@ -41,11 +45,9 @@ func update_portrait():
 	
 	var images = CharacterSprites.get_sprites_for_emotion(emotion)
 	
-	print(images)
-	
 	if images.size() >= 2:
-		#while portrait.texture == old_texture:
-		portrait.texture = images.pick_random()
+		while portrait.texture == old_texture:
+			portrait.texture = images.pick_random()
 	elif images.size() == 1:
 		portrait.texture = images[0]
 	

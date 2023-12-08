@@ -32,7 +32,12 @@ const EXPRESSION_REDIRECTS = {
 	"enthusiasm": "fun",
 	"hate": "anger",
 	"empty": "sadness",
-	
+	"fear": "worry",
+	"joy": "fun",
+	"pessimism": "worry",
+	"trust": "fun",
+	"disgust": "anger",
+	"anticipation": "fun",
 }
 
 var images: Array[Texture] = []

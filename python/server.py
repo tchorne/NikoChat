@@ -5,6 +5,14 @@ import socket
 from characterai import PyCAI
 from os import getenv
 
+from transformers import pipeline
+
+EMOTION_ANALYSIS = True
+NEUTRAL_THRESHHOLD = 0.7
+
+REPEAT_BACK = True
+
+
 char = "cEJr8YzuRSvwKr3WHcUJ0dMirh9bZdwJWt9DR2ku1QQ"
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost) 127.0.0.1
@@ -31,9 +39,33 @@ def charai_message(msg):
 
     return (f"{text}") # {name}: {text}
 
+
+def analyze_emotion(text):
+    # Load pre-trained emotion analysis model
+    emotion_classifier = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", top_k=None)
+
+    # Perform emotion analysis on the given text
+    result = emotion_classifier(text)[0]
+    #print(result)
+    highestScore = result[0]['score']
+    highestLabel = result[0]['label']
+
+    for r in result:
+        if r['score'] > highestScore:
+            highestScore = r['score']
+            highestLabel = r['label']
+    
+    if highestScore > NEUTRAL_THRESHHOLD:
+        return "<" + highestLabel + ">"
+    else:
+        return ""
+
+
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, PORT))
+    print("Starting server on port " + str(PORT))
     s.listen()
     conn, addr = s.accept()
     with conn:
@@ -55,14 +87,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 stripped = string.removeprefix("MSG:")
                 #stripped = stripped.removesuffix("")
                 print("User Message recieved: %s" % stripped)
-                responsetext = charai_message(stripped)
+                responsetext = ""
+                if REPEAT_BACK:
+                    responsetext = stripped
+                else:
+                    responsetext = charai_message(stripped)
+                
+                if EMOTION_ANALYSIS:
+                    responsetext = analyze_emotion(responsetext) + responsetext
+
                 response = bytes(responsetext, 'utf-8')
                 print("AI Response recieved: %s" % responsetext)
                 conn.sendall(response)
-
-
-
-
 
 
 

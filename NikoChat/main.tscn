@@ -59,7 +59,7 @@ visible = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Chat/Character"]
 stream = ExtResource("3_4t47r")
-volume_db = -4.685
+volume_db = -7.161
 pitch_scale = 1.08
 
 [node name="MessageSending" type="Control" parent="Chat"]
@@ -90,6 +90,7 @@ wrap_mode = 1
 script = ExtResource("4_21vyc")
 
 [node name="Settings" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -120,8 +121,8 @@ text = "Open Save Directory"
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -69.0
-offset_bottom = 69.0
+offset_left = -36.0
+offset_bottom = 36.0
 grow_horizontal = 0
 texture_normal = ExtResource("7_xbu0n")
 ignore_texture_size = true

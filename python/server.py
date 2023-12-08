@@ -4,6 +4,7 @@ import socket
 
 from characterai import PyCAI
 from os import getenv
+import json
 
 from transformers import pipeline
 
@@ -60,7 +61,19 @@ def analyze_emotion(text):
     else:
         return ""
 
-
+def get_history():
+    history = client.chat.get_histories(char)['histories'][0]
+    msgs = history['msgs']
+    history_dict = {"messages": []}
+    for message in msgs:
+        history_dict['messages'].append(
+            {
+                "name" : message['src_char']['participant']['name'],
+                "human" : message['src__is_human'],
+                "text" : message['text']
+            }
+        )
+    return json.dumps(history_dict)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -96,9 +109,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if EMOTION_ANALYSIS:
                     responsetext = analyze_emotion(responsetext) + responsetext
 
+                responsetext = "MSG:" + responsetext
                 response = bytes(responsetext, 'utf-8')
                 print("AI Response recieved: %s" % responsetext)
                 conn.sendall(response)
+            
+            isHistoryRequest = string == "HISTORY"
+            if isHistoryRequest:
+                historytext = get_history()
+                historytext = "HISTORY:"+historytext
+                history = bytes(historytext, "utf-8")
+                conn.sendall(history)
+
 
 
 

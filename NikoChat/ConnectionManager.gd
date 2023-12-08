@@ -1,6 +1,6 @@
 extends Node
 
-signal server_response(response: String)
+signal message_response(response: String)
 signal server_connected
 signal server_disconnected
 
@@ -26,10 +26,12 @@ func _connect_after_timeout(timeout: float) -> void:
 func _handle_client_connected() -> void:
 	print("Client connected to server.")
 	server_connected.emit()
+	_client.send_message("HISTORY")
 
 func _handle_client_data(data: PackedByteArray) -> void:
 	print("Client data: ", data.get_string_from_utf8())
-	server_response.emit(data.get_string_from_utf8())
+	handle_server_response(data.get_string_from_utf8())
+	
 
 func _handle_client_disconnected() -> void:
 	print("Client disconnected from server.")
@@ -49,3 +51,9 @@ func _on_send_pressed():
 
 func _on_text_edit_message_sent(message):
 	_client.send_message("MSG:" + message)
+
+func handle_server_response(response: String):
+	if response.begins_with("MSG:"):
+		message_response.emit(response.trim_prefix("MSG:"))
+	elif response.begins_with("HISTORY:"):
+		HistoryManager.load_from_json_string(response.trim_prefix("HISTORY:"))

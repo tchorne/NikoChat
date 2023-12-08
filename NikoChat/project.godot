@@ -19,6 +19,7 @@ config/icon="res://niko.png"
 
 CharacterSprites="*res://CharacterSprites.gd"
 SaveManager="*res://SaveManager.gd"
+HistoryManager="*res://HistoryManager.gd"
 
 [display]
 

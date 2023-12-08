@@ -9,17 +9,19 @@ const TIME_BETWEEN_CHARS = 1.0/40
 const FAST_SPEED = 1.0/80
 const SLOW_SPEED = 1.0/40
 const SOUND_SPEED = 1.0/13
-
+const SLEEP_SECONDS = 60*30
 
 var animating = false
 var time_until_next_char = TIME_BETWEEN_CHARS
 var time_until_next_sound = SOUND_SPEED
 var speed = FAST_SPEED
 
+
 var emotion: String = ""
 
 func _ready():
 	thinking.get_node("Animation").play("thinking")
+	_on_sleep_timer_timeout()
 
 func update_text(text: String):
 	if text.begins_with("<"):
@@ -69,14 +71,19 @@ func _process(delta):
 				
 		if label.visible_characters > label.text.length():
 			animating = false
-
-func _on_send_pressed():
-	update_text(get_node("../TextEdit").text)
-
+			if emotion != "sleep":
+				$SleepTimer.start(SLEEP_SECONDS)
 
 func _on_text_edit_message_sent(_message):
 	thinking.visible = true
-	
-func _on_connection_manager_server_response(response):
+	emotion = "think"
+	update_portrait()
+
+func _on_sleep_timer_timeout():
+	emotion = "sleep"
+	update_text("<sleep>...")
+
+func _on_connection_manager_message_response(response):
+	HistoryManager.add_message(response, false)
 	thinking.visible = false
 	update_text(response)

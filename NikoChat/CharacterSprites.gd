@@ -82,3 +82,5 @@ func get_sprites_for_emotion(emotion: String):
 func refresh_sprites():
 	for e in EMOTIONS:
 		load_sprites_for_emotion(e)
+	load_sprites_for_emotion("think")
+	load_sprites_for_emotion("sleep")

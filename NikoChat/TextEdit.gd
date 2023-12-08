@@ -13,6 +13,7 @@ func _input(event):
 func send_message():
 	if text == "": return
 	message_sent.emit(text)
+	HistoryManager.add_message(text, true)
 	text = ""
 
 func _on_connection_manager_server_connected():

@@ -3,6 +3,7 @@ extends Node
 @export var label: RichTextLabel
 @export var portrait: TextureRect
 @export var sound: AudioStreamPlayer
+@export var thinking: Label
 
 const TIME_BETWEEN_CHARS = 1.0/40
 const FAST_SPEED = 1.0/80
@@ -15,7 +16,17 @@ var time_until_next_char = TIME_BETWEEN_CHARS
 var time_until_next_sound = SOUND_SPEED
 var speed = FAST_SPEED
 
-func update_text(text):
+var emotion: String = ""
+
+func update_text(text: String):
+	if text.begins_with("<"):
+		emotion = text.substr(1, text.find(">"))
+		print("Emotion Detected: " + emotion)
+		text.trim_prefix("<" + emotion + ">")
+	else:
+		emotion = "neutral"
+		
+	
 	animating = true
 	label.visible_characters = 0
 	label.text = text
@@ -27,9 +38,18 @@ func update_text(text):
 
 func update_portrait():
 	var old_texture = portrait.texture
-	if CharacterSprites.images.size() >= 2:
-		while portrait.texture == old_texture:
-			portrait.texture = CharacterSprites.images.pick_random()
+	
+	var images = CharacterSprites.get_sprites_for_emotion(emotion)
+	
+	print(images)
+	
+	if images.size() >= 2:
+		#while portrait.texture == old_texture:
+		portrait.texture = images.pick_random()
+	elif images.size() == 1:
+		portrait.texture = images[0]
+	
+		
 
 func _process(delta):
 	if animating:
@@ -52,8 +72,9 @@ func _on_send_pressed():
 	update_text(get_node("../TextEdit").text)
 
 
-func _on_text_edit_message_sent(message):
-	update_text(message)
-
+func _on_text_edit_message_sent(_message):
+	thinking.visible = true
+	
 func _on_connection_manager_server_response(response):
+	thinking.visible = false
 	update_text(response)

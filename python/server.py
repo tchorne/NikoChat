@@ -50,6 +50,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             string = data.decode("utf8")
             isMessage = string.startswith("MSG:")
 
+            #if isMessage: conn.sendall(data)
             if isMessage:
                 stripped = string.removeprefix("MSG:")
                 #stripped = stripped.removesuffix("")

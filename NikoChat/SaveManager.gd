@@ -29,6 +29,9 @@ const DEFAULT_SAVE = {
 	},
 }
 
+func _ready():
+	make_directories()
+
 func get_save() -> Dictionary:
 	if !FileAccess.file_exists(FILENAME):
 		var f = FileAccess.open(FILENAME, FileAccess.WRITE)
@@ -44,6 +47,23 @@ func get_save() -> Dictionary:
 		if not parse_result:
 			print_debug("JSON error in savedata")
 		return json.get_data()
+
+func make_directories():
+	var dir = DirAccess.open("user://")
+	dir.make_dir("images")
+	dir.make_dir("images/fun")
+	dir.make_dir("images/neutral")
+	dir.make_dir("images/sadness")
+	dir.make_dir("images/worry")
+	dir.make_dir("images/surprise")
+	dir.make_dir("images/love")
+	dir.make_dir("images/relief")
+	#dir.make_dir("images/happiness") fun
+	# dir.make_dir("images/empty") sadness
+	dir.make_dir("images/boredom")
+	# dir.make_dir("images/enthusiasm") fun
+	dir.make_dir("images/anger")
+	# dir.make_dir("images/hate") anger
 
 func save(data: Dictionary):
 	

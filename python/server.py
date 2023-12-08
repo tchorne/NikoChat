@@ -11,7 +11,7 @@ from transformers import pipeline
 EMOTION_ANALYSIS = True
 NEUTRAL_THRESHHOLD = 0.7
 
-REPEAT_BACK = False
+REPEAT_BACK = True
 
 
 char = "cEJr8YzuRSvwKr3WHcUJ0dMirh9bZdwJWt9DR2ku1QQ"

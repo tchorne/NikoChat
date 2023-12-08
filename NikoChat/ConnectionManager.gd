@@ -29,7 +29,7 @@ func _handle_client_connected() -> void:
 	_client.send_message("HISTORY")
 
 func _handle_client_data(data: PackedByteArray) -> void:
-	print("Client data: ", data.get_string_from_utf8())
+	#print("Client data: ", data.get_string_from_utf8())
 	handle_server_response(data.get_string_from_utf8())
 	
 

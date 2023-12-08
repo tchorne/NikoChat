@@ -84,6 +84,14 @@ func _on_sleep_timer_timeout():
 	update_text("<sleep>...")
 
 func _on_connection_manager_message_response(response):
-	HistoryManager.add_message(response, false)
+	print(remove_emotion(response))
+	HistoryManager.add_message(remove_emotion(response), false)
+	
 	thinking.visible = false
 	update_text(response)
+
+func remove_emotion(text:String) -> String:
+	if text.begins_with("<"):
+		var e = text.substr(1, text.find(">")).rstrip(">")
+		text = text.trim_prefix("<" + e + ">")
+	return text

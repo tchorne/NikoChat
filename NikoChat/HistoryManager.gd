@@ -19,4 +19,4 @@ func add_message(text: String, human: bool = false):
 			'name': 'NikoChat',
 		}
 	)
-	print("new history: " + JSON.stringify(history))
+	#print("new history: " + JSON.stringify(history))

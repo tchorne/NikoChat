@@ -4,7 +4,7 @@ signal message_sent(message: String)
 
 func _input(event):
 	if has_focus():
-		if event is InputEventKey and event.is_pressed():
+		if event is InputEventKey and event.is_pressed() and not Input.is_key_pressed(KEY_SHIFT):
 			if event.keycode == KEY_ENTER:
 				send_message()
 				get_viewport().set_input_as_handled()

@@ -38,6 +38,7 @@ const EXPRESSION_REDIRECTS = {
 	"trust": "fun",
 	"disgust": "anger",
 	"anticipation": "fun",
+	"optimism": "fun"
 }
 
 var images: Array[Texture] = []

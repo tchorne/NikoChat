@@ -12,7 +12,7 @@ from transformers import pipeline
 EMOTION_ANALYSIS = True
 NEUTRAL_THRESHHOLD = 0.7
 
-REPEAT_BACK = True
+REPEAT_BACK = False
 
 
 char = "cEJr8YzuRSvwKr3WHcUJ0dMirh9bZdwJWt9DR2ku1QQ"
@@ -99,10 +99,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             #if isMessage: conn.sendall(data)
             if isMessage:
                 stripped = string.removeprefix("MSG:")
-                
+
                 print("User Message recieved: %s" % stripped)
 
-                stripped.replace("CONTEXT", context.get_context())
+                stripped = stripped.replace("CONTEXT", context.get_context())
 
                 responsetext = ""
                 if REPEAT_BACK:

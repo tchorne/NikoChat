@@ -70,6 +70,7 @@ def get_context():
     context_array.append(get_weather())
 
     context += ", ".join(context_array)
-
+    
+    context += ")"
     return context
 

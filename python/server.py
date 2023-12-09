@@ -5,6 +5,7 @@ import socket
 from characterai import PyCAI
 from os import getenv
 import json
+import context
 
 from transformers import pipeline
 
@@ -98,8 +99,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             #if isMessage: conn.sendall(data)
             if isMessage:
                 stripped = string.removeprefix("MSG:")
-                #stripped = stripped.removesuffix("")
+                
                 print("User Message recieved: %s" % stripped)
+
+                stripped.replace("CONTEXT", context.get_context())
+
                 responsetext = ""
                 if REPEAT_BACK:
                     responsetext = stripped

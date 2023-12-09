@@ -50,6 +50,7 @@ func connect_to_host(host: String, port: int) -> void:
 	print("Connecting to %s:%d" % [host, port])
 	# Reset status so we can tell if it changes to error again.
 	_status = _stream.STATUS_NONE
+	_stream.disconnect_from_host()
 	if _stream.connect_to_host(host, port) != OK:
 		print("Error connecting to host.")
 		emit_signal("error")

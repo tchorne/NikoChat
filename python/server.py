@@ -102,7 +102,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                 print("User Message recieved: %s" % stripped)
 
-                stripped = stripped.replace("CONTEXT", context.get_context())
+                if "CONTEXT" in stripped:
+                    stripped = stripped.replace("CONTEXT", context.get_context())
 
                 responsetext = ""
                 if REPEAT_BACK:

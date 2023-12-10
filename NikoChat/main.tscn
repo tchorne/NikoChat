@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://btny33ucbo1xd"]
+[gd_scene load_steps=14 format=3 uid="uid://btny33ucbo1xd"]
 
 [ext_resource type="Script" path="res://ConnectionManager.gd" id="1_onaeo"]
 [ext_resource type="Script" path="res://CharacterAnimator.gd" id="1_rcln1"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://History.gd" id="7_hfs0r"]
 [ext_resource type="Texture2D" uid="uid://dib1hoj087xxy" path="res://assets/gear.png" id="7_xbu0n"]
 [ext_resource type="Texture2D" uid="uid://drekec14tkiix" path="res://assets/history.png" id="10_xxfax"]
+[ext_resource type="Script" path="res://PanelActions.gd" id="11_dnfy4"]
+[ext_resource type="Texture2D" uid="uid://b36pghh5l6g2t" path="res://assets/back.png" id="11_exeum"]
 
 [node name="Main" type="Node"]
 
@@ -194,6 +196,117 @@ texture_normal = ExtResource("10_xxfax")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="PanelActions" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("11_dnfy4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelActions"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Drag" type="TextureButton" parent="PanelActions/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture_normal = ExtResource("11_exeum")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="PanelActions/HBoxContainer/Drag"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.5
+offset_top = -11.5
+offset_right = 11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_j4ynn")
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+
+[node name="Hide" type="TextureButton" parent="PanelActions/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture_normal = ExtResource("11_exeum")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="PanelActions/HBoxContainer/Hide"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.5
+offset_top = -11.5
+offset_right = 11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_j4ynn")
+theme_override_font_sizes/font_size = 20
+text = "_"
+horizontal_alignment = 1
+
+[node name="Close" type="TextureButton" parent="PanelActions/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture_normal = ExtResource("11_exeum")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="PanelActions/HBoxContainer/Close"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.5
+offset_top = -11.5
+offset_right = 11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_j4ynn")
+theme_override_font_sizes/font_size = 20
+text = "X"
+horizontal_alignment = 1
+
+[node name="Border" type="TextureButton" parent="PanelActions/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture_normal = ExtResource("11_exeum")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="PanelActions/HBoxContainer/Border"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.5
+offset_top = -11.5
+offset_right = 11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_j4ynn")
+theme_override_font_sizes/font_size = 20
+text = "B"
+horizontal_alignment = 1
+
 [node name="ConnectionManager" type="Node" parent="."]
 script = ExtResource("1_onaeo")
 
@@ -203,6 +316,11 @@ script = ExtResource("1_onaeo")
 [connection signal="pressed" from="Settings/savedir" to="Settings" method="_on_savedir_pressed"]
 [connection signal="pressed" from="SettingsButton" to="Settings" method="_on_texture_button_pressed"]
 [connection signal="pressed" from="HistoryButton" to="History" method="_on_history_button_pressed"]
+[connection signal="gui_input" from="PanelActions/HBoxContainer/Drag" to="PanelActions" method="_on_drag_gui_input"]
+[connection signal="pressed" from="PanelActions/HBoxContainer/Hide" to="PanelActions" method="_on_hide_pressed"]
+[connection signal="pressed" from="PanelActions/HBoxContainer/Close" to="PanelActions" method="_on_close_pressed"]
+[connection signal="gui_input" from="PanelActions/HBoxContainer/Border" to="PanelActions" method="_on_drag_gui_input"]
+[connection signal="pressed" from="PanelActions/HBoxContainer/Border" to="PanelActions" method="_on_border_pressed"]
 [connection signal="message_response" from="ConnectionManager" to="Chat/Character" method="_on_connection_manager_message_response"]
 [connection signal="server_connected" from="ConnectionManager" to="Chat/MessageSending/TextEdit" method="_on_connection_manager_server_connected"]
 [connection signal="server_disconnected" from="ConnectionManager" to="Chat/MessageSending/TextEdit" method="_on_connection_manager_server_disconnected"]

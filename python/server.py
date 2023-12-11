@@ -81,50 +81,52 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     print("Starting server on port " + str(PORT))
     s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print(f"Connected by {addr}")
+    
+    while True:
+        conn, addr = s.accept()
+        with conn:
+            print(f"Connected by {addr}")
 
 
-        #print(chat['replies'][0]['text'])
+            #print(chat['replies'][0]['text'])
 
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
+            while True:
+                data = conn.recv(1024)
+                if not data:
+                    break
 
-            string = data.decode("utf8")
-            isMessage = string.startswith("MSG:")
+                string = data.decode("utf8")
+                isMessage = string.startswith("MSG:")
 
-            #if isMessage: conn.sendall(data)
-            if isMessage:
-                stripped = string.removeprefix("MSG:")
+                #if isMessage: conn.sendall(data)
+                if isMessage:
+                    stripped = string.removeprefix("MSG:")
 
-                print("User Message recieved: %s" % stripped)
+                    print("User Message recieved: %s" % stripped)
 
-                if "CONTEXT" in stripped:
-                    stripped = stripped.replace("CONTEXT", context.get_context())
+                    if "CONTEXT" in stripped:
+                        stripped = stripped.replace("CONTEXT", context.get_context())
 
-                responsetext = ""
-                if REPEAT_BACK:
-                    responsetext = stripped
-                else:
-                    responsetext = charai_message(stripped)
+                    responsetext = ""
+                    if REPEAT_BACK:
+                        responsetext = stripped
+                    else:
+                        responsetext = charai_message(stripped)
+                    
+                    if EMOTION_ANALYSIS:
+                        responsetext = analyze_emotion(responsetext) + responsetext
+
+                    responsetext = "MSG:" + responsetext
+                    response = bytes(responsetext, 'utf-8')
+                    print("AI Response recieved: %s" % responsetext)
+                    conn.sendall(response)
                 
-                if EMOTION_ANALYSIS:
-                    responsetext = analyze_emotion(responsetext) + responsetext
-
-                responsetext = "MSG:" + responsetext
-                response = bytes(responsetext, 'utf-8')
-                print("AI Response recieved: %s" % responsetext)
-                conn.sendall(response)
-            
-            isHistoryRequest = string == "HISTORY"
-            if isHistoryRequest:
-                historytext = get_history()
-                historytext = "HISTORY:"+historytext
-                history = bytes(historytext, "utf-8")
-                conn.sendall(history)
+                isHistoryRequest = string == "HISTORY"
+                if isHistoryRequest:
+                    historytext = get_history()
+                    historytext = "HISTORY:"+historytext
+                    history = bytes(historytext, "utf-8")
+                    conn.sendall(history)
 
 
 

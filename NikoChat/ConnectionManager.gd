@@ -57,3 +57,7 @@ func handle_server_response(response: String):
 		message_response.emit(response.trim_prefix("MSG:"))
 	elif response.begins_with("HISTORY:"):
 		HistoryManager.load_from_json_string(response.trim_prefix("HISTORY:"))
+
+
+func _on_settings_reconnect(ip, port):
+	_client.connect_to_host(ip, port)

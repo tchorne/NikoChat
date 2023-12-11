@@ -143,7 +143,6 @@ size_flags_vertical = 3
 theme_override_constants/separation = 30
 
 [node name="Settings" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -163,12 +162,40 @@ color = Color(0, 0, 0, 0.501961)
 
 [node name="savedir" type="Button" parent="Settings"]
 layout_mode = 0
-offset_left = 25.0
-offset_top = 18.0
-offset_right = 191.0
-offset_bottom = 49.0
+offset_left = 22.0
+offset_top = 53.0
+offset_right = 188.0
+offset_bottom = 84.0
 theme_override_fonts/font = ExtResource("4_j4ynn")
 text = "Open Save Directory"
+
+[node name="IPEdit" type="TextEdit" parent="Settings"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -263.0
+offset_top = 51.0
+offset_right = -30.0
+offset_bottom = 81.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("4_j4ynn")
+text = "localhost:8081"
+placeholder_text = "localhost:8081"
+
+[node name="Reconnect" type="Button" parent="Settings"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -262.0
+offset_top = 84.0
+offset_right = -173.0
+offset_bottom = 114.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("4_j4ynn")
+text = "Reconnect
+"
 
 [node name="SettingsButton" type="TextureButton" parent="."]
 anchors_preset = 1
@@ -205,7 +232,7 @@ script = ExtResource("11_dnfy4")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelActions"]
 layout_mode = 0
-offset_right = 40.0
+offset_right = 172.0
 offset_bottom = 40.0
 
 [node name="Drag" type="TextureButton" parent="PanelActions/HBoxContainer"]
@@ -313,7 +340,9 @@ script = ExtResource("1_onaeo")
 [connection signal="timeout" from="Chat/Character/SleepTimer" to="Chat/Character" method="_on_sleep_timer_timeout"]
 [connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="Chat/Character" method="_on_text_edit_message_sent"]
 [connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="ConnectionManager" method="_on_text_edit_message_sent"]
+[connection signal="reconnect" from="Settings" to="ConnectionManager" method="_on_settings_reconnect"]
 [connection signal="pressed" from="Settings/savedir" to="Settings" method="_on_savedir_pressed"]
+[connection signal="pressed" from="Settings/Reconnect" to="Settings" method="_on_reconnect_pressed"]
 [connection signal="pressed" from="SettingsButton" to="Settings" method="_on_texture_button_pressed"]
 [connection signal="pressed" from="HistoryButton" to="History" method="_on_history_button_pressed"]
 [connection signal="gui_input" from="PanelActions/HBoxContainer/Drag" to="PanelActions" method="_on_drag_gui_input"]

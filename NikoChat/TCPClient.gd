@@ -71,11 +71,14 @@ func send(data: PackedByteArray) -> bool:
 func send_message(data: String) -> bool:
 	if _status != _stream.STATUS_CONNECTED:
 		print("Error: Stream is not currently connected.")
+		StatusMessageBus.new_status("Error: Stream is not currently connected.")
 		return false
 	data.strip_edges()
 	var data2 = data.to_utf8_buffer()
 	assert(data != "")
 	var _result = _stream.put_data(data2)
+	
+	StatusMessageBus.new_status("Message '" + data + "' sent")
 	
 	return true
 

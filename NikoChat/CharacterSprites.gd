@@ -74,6 +74,8 @@ func get_sprites_for_emotion(emotion: String):
 	if emotion in EXPRESSION_REDIRECTS:
 		emotion = EXPRESSION_REDIRECTS[emotion]
 		
+	if not emotion in emotion_to_image_array: return
+	
 	if not emotion_to_image_array[emotion].is_empty():
 		return emotion_to_image_array[emotion]
 	else:

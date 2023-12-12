@@ -58,9 +58,6 @@ def get_weather():
 
     return weather_text
 
-
-    
-
 def get_context():
 
     context = "(CONTEXT: "
@@ -74,3 +71,13 @@ def get_context():
     context += ")"
     return context
 
+def is_context_out_of_date():
+    if not path_exists(WEATHER_PATH): return True
+
+    last_modified_time = get_modified_time(WEATHER_PATH)
+    last_modified_date = datetime.utcfromtimestamp(last_modified_time).date()
+    today_date = datetime.utcnow().date()
+
+    if not last_modified_date == today_date:
+        return True
+    return False

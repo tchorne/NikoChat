@@ -17,7 +17,8 @@ REPEAT_BACK = False
 
 char = "cEJr8YzuRSvwKr3WHcUJ0dMirh9bZdwJWt9DR2ku1QQ"
 
-HOST = "127.0.0.1"  # Standard loopback interface address (localhost) 127.0.0.1
+#HOST = "127.0.0.1"  # Standard loopback interface address (localhost) 127.0.0.1
+HOST = "192.168.68.58"
 PORT = 8081  # Port to listen on (non-privileged ports are > 1023)
 
 client = PyCAI(getenv("CHARACTERAI_TOKEN"))
@@ -79,7 +80,7 @@ def get_history():
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((HOST, PORT))
-    print("Starting server on port " + str(PORT))
+    print(f"Starting server on {HOST}:{PORT}")
     s.listen()
     
     while True:
@@ -106,6 +107,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
                     if "CONTEXT" in stripped:
                         stripped = stripped.replace("CONTEXT", context.get_context())
+                    elif context.is_context_out_of_date():
+                        stripped = context.get_context() + stripped
 
                     responsetext = ""
                     if REPEAT_BACK:

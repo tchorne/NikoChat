@@ -19,8 +19,13 @@ func send_message():
 func _on_connection_manager_server_connected():
 	editable = true
 	placeholder_text = ">"
+	text = ""
 
 
 func _on_connection_manager_server_disconnected():
 	editable = false
 	placeholder_text = "Lost Connection..."
+
+
+func _on_settings_reconnect(ip, port):
+	text = "Connecting to IP " + ip + " PORT " + str(port)

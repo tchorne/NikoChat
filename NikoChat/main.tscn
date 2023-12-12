@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://btny33ucbo1xd"]
+[gd_scene load_steps=15 format=3 uid="uid://btny33ucbo1xd"]
 
 [ext_resource type="Script" path="res://ConnectionManager.gd" id="1_onaeo"]
 [ext_resource type="Script" path="res://CharacterAnimator.gd" id="1_rcln1"]
@@ -13,6 +13,16 @@
 [ext_resource type="Texture2D" uid="uid://drekec14tkiix" path="res://assets/history.png" id="10_xxfax"]
 [ext_resource type="Script" path="res://PanelActions.gd" id="11_dnfy4"]
 [ext_resource type="Texture2D" uid="uid://b36pghh5l6g2t" path="res://assets/back.png" id="11_exeum"]
+
+[sub_resource type="GDScript" id="GDScript_j3ayf"]
+script/source = "extends Label
+
+func _ready():
+	StatusMessageBus.connect(\"new\", new_status)
+	
+func new_status(message: String):
+	text = message
+"
 
 [node name="Main" type="Node"]
 
@@ -104,6 +114,23 @@ wrap_mode = 1
 caret_blink = true
 script = ExtResource("4_21vyc")
 
+[node name="Button" type="Button" parent="Chat"]
+layout_mode = 0
+offset_left = 258.0
+offset_top = 81.0
+offset_right = 381.0
+offset_bottom = 119.0
+text = "Test message"
+
+[node name="Label" type="Label" parent="Chat"]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 46.0
+offset_right = 427.0
+offset_bottom = 69.0
+text = "sDFSDFsdfs"
+script = SubResource("GDScript_j3ayf")
+
 [node name="History" type="Control" parent="."]
 visible = false
 layout_mode = 3
@@ -143,6 +170,7 @@ size_flags_vertical = 3
 theme_override_constants/separation = 30
 
 [node name="Settings" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -234,6 +262,7 @@ script = ExtResource("11_dnfy4")
 layout_mode = 0
 offset_right = 172.0
 offset_bottom = 40.0
+metadata/_edit_lock_ = true
 
 [node name="Drag" type="TextureButton" parent="PanelActions/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)
@@ -340,6 +369,8 @@ script = ExtResource("1_onaeo")
 [connection signal="timeout" from="Chat/Character/SleepTimer" to="Chat/Character" method="_on_sleep_timer_timeout"]
 [connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="Chat/Character" method="_on_text_edit_message_sent"]
 [connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="ConnectionManager" method="_on_text_edit_message_sent"]
+[connection signal="pressed" from="Chat/Button" to="ConnectionManager" method="_on_button_pressed"]
+[connection signal="reconnect" from="Settings" to="Chat/MessageSending/TextEdit" method="_on_settings_reconnect"]
 [connection signal="reconnect" from="Settings" to="ConnectionManager" method="_on_settings_reconnect"]
 [connection signal="pressed" from="Settings/savedir" to="Settings" method="_on_savedir_pressed"]
 [connection signal="pressed" from="Settings/Reconnect" to="Settings" method="_on_reconnect_pressed"]

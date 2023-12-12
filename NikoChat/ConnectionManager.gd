@@ -21,7 +21,10 @@ func _ready() -> void:
 
 func _connect_after_timeout(timeout: float) -> void:
 	await get_tree().create_timer(timeout).timeout
+	if _client._status == StreamPeerTCP.STATUS_CONNECTED:
+		return
 	_client.connect_to_host(HOST, PORT)
+	pass
 
 func _handle_client_connected() -> void:
 	print("Client connected to server.")
@@ -61,3 +64,7 @@ func handle_server_response(response: String):
 
 func _on_settings_reconnect(ip, port):
 	_client.connect_to_host(ip, port)
+
+
+func _on_button_pressed():
+	_client.send_message("MSG:test")

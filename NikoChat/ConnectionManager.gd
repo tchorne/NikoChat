@@ -54,6 +54,7 @@ func _on_send_pressed():
 
 func _on_text_edit_message_sent(message):
 	_client.send_message("MSG:" + message)
+	StatusMessageBus.new_status("on_text_edit_message_sent " + str(randi()%100))
 
 func handle_server_response(response: String):
 	if response.begins_with("MSG:"):

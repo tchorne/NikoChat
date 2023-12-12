@@ -115,6 +115,7 @@ caret_blink = true
 script = ExtResource("4_21vyc")
 
 [node name="Button" type="Button" parent="Chat"]
+visible = false
 layout_mode = 0
 offset_left = 258.0
 offset_top = 81.0
@@ -123,6 +124,7 @@ offset_bottom = 119.0
 text = "Test message"
 
 [node name="Label" type="Label" parent="Chat"]
+visible = false
 layout_mode = 0
 offset_left = 211.0
 offset_top = 46.0
@@ -224,6 +226,19 @@ grow_horizontal = 0
 theme_override_fonts/font = ExtResource("4_j4ynn")
 text = "Reconnect
 "
+
+[node name="SaveIP" type="Button" parent="Settings"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -122.0
+offset_top = 84.0
+offset_right = -33.0
+offset_bottom = 114.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("4_j4ynn")
+text = "Save"
 
 [node name="SettingsButton" type="TextureButton" parent="."]
 anchors_preset = 1
@@ -367,6 +382,8 @@ horizontal_alignment = 1
 script = ExtResource("1_onaeo")
 
 [connection signal="timeout" from="Chat/Character/SleepTimer" to="Chat/Character" method="_on_sleep_timer_timeout"]
+[connection signal="focus_entered" from="Chat/MessageSending/TextEdit" to="Chat/MessageSending/TextEdit" method="_on_focus_entered"]
+[connection signal="focus_exited" from="Chat/MessageSending/TextEdit" to="Chat/MessageSending/TextEdit" method="_on_focus_exited"]
 [connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="Chat/Character" method="_on_text_edit_message_sent"]
 [connection signal="message_sent" from="Chat/MessageSending/TextEdit" to="ConnectionManager" method="_on_text_edit_message_sent"]
 [connection signal="pressed" from="Chat/Button" to="ConnectionManager" method="_on_button_pressed"]
@@ -374,6 +391,7 @@ script = ExtResource("1_onaeo")
 [connection signal="reconnect" from="Settings" to="ConnectionManager" method="_on_settings_reconnect"]
 [connection signal="pressed" from="Settings/savedir" to="Settings" method="_on_savedir_pressed"]
 [connection signal="pressed" from="Settings/Reconnect" to="Settings" method="_on_reconnect_pressed"]
+[connection signal="pressed" from="Settings/SaveIP" to="Settings" method="_on_reconnect_2_pressed"]
 [connection signal="pressed" from="SettingsButton" to="Settings" method="_on_texture_button_pressed"]
 [connection signal="pressed" from="HistoryButton" to="History" method="_on_history_button_pressed"]
 [connection signal="gui_input" from="PanelActions/HBoxContainer/Drag" to="PanelActions" method="_on_drag_gui_input"]

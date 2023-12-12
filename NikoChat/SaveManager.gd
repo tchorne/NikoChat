@@ -27,6 +27,8 @@ const DEFAULT_SAVE = {
 		"happy": "user://",
 		
 	},
+	"default_ip": "localhost",
+	"default_port": 8081,
 }
 
 func _ready():
@@ -44,8 +46,9 @@ func get_save() -> Dictionary:
 		var json_string = f.get_line()
 		var json = JSON.new()
 		var parse_result = json.parse(json_string)
-		if not parse_result:
-			print_debug("JSON error in savedata")
+		if parse_result:
+			print_debug("JSON error in savedata, error " + json.get_error_message())
+			
 		return json.get_data()
 
 func make_directories():
@@ -74,9 +77,12 @@ func save(data: Dictionary):
 			for emotion in data[key]:
 				current_save[key][emotion] = data[key][emotion]
 			
-		elif key in current_save:
+		else:
 			current_save[key] = data[key]
-			
+	
+	var f = FileAccess.open(FILENAME, FileAccess.WRITE)
+	print(JSON.stringify(current_save))
+	f.store_line(JSON.stringify(current_save))
 	
 	
 	pass

@@ -55,6 +55,7 @@ func _ready():
 	refresh_sprites()
 
 func load_sprites_for_emotion(emotion: String):
+	SaveManager.make_directories()
 	var dir = DirAccess.open("user://images/".path_join(emotion))
 	dir.list_dir_begin()
 	emotion_to_image_array[emotion] = []

@@ -67,7 +67,9 @@ func make_directories():
 	# dir.make_dir("images/enthusiasm") fun
 	dir.make_dir("images/anger")
 	# dir.make_dir("images/hate") anger
-
+	dir.make_dir("images/think")
+	dir.make_dir("images/sleep")
+	
 func save(data: Dictionary):
 	
 	var current_save = get_save()

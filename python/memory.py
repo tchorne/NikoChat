@@ -190,7 +190,7 @@ def get_closest_conversations(vector, n=2): # Returns summaries jsons for the cl
 
 # Returns an array of messages in the current or most recent coversation 
 # in a format that can be passed directly into openai chat completion
-def get_most_recent_messages():
+def get_most_recent_messages(human="Thomas", bot="Niko"):
     if not get_most_recent_file(RAW_PATH): return []
     raw_json = json.loads(load_from_file(get_most_recent_file(RAW_PATH)))
 
@@ -198,15 +198,13 @@ def get_most_recent_messages():
 
     if not raw_messages: return[]
 
-    human = "HUMAN"
-    bot = "BOT"
 
     processed_messages = []
 
-    if raw_messages[0]['author'] == 'Thomas' or raw_messages[0]['author'] == 'Niko':
-        human = 'Thomas'
-        bot = 'Niko'
+    if raw_messages[0]['author'] == human or raw_messages[0]['author'] == bot:
+        pass
     elif len(raw_messages >= 2):
+        print("Error in get_most_recent_messages()! Given names do not match text files. Are you sure you loaded the right conversation?")
         human = raw_messages[0]['author']
         bot = raw_messages[1]['author']
     else:

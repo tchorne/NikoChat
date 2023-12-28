@@ -1,5 +1,7 @@
 extends Node
 
+signal all_chunks_finished
+
 @export var label: RichTextLabel
 @export var portrait: TextureRect
 @export var sound: AudioStreamPlayer
@@ -10,11 +12,14 @@ const FAST_SPEED = 1.0/80
 const SLOW_SPEED = 1.0/40
 const SOUND_SPEED = 1.0/13
 const SLEEP_SECONDS = 60*30
+const SPLIT_CHARACTERS = 170
 
 var animating = false
+var awaiting_input = false
 var time_until_next_char = TIME_BETWEEN_CHARS
 var time_until_next_sound = SOUND_SPEED
 var speed = FAST_SPEED
+var chunk_buffer : Array[String]
 
 
 var emotion: String = ""
@@ -32,14 +37,21 @@ func update_text(text: String):
 	else:
 		emotion = "neutral"
 		
+	# Split text into several chunks
 	
-	animating = true
-	label.visible_characters = 0
-	label.text = text
-	sound.play()
-	time_until_next_char = TIME_BETWEEN_CHARS
-	time_until_next_sound = SOUND_SPEED
+	chunk_buffer.clear()
+	chunk_buffer.push_back("")
 	
+	var regex = RegEx.new()
+	regex.compile("(?<!\\w\\.\\w.)(?<![A-Z][a-z]\\.)(?<=\\.|\\?)\\s")
+
+	for part in regex.sub(text, "<SPLIT>").split("<SPLIT>", false):
+		if len(chunk_buffer.back() + part) < SPLIT_CHARACTERS:
+			chunk_buffer[-1] += part
+		else:
+			chunk_buffer.push_back(part)
+	
+	next_chunk()
 	update_portrait()
 
 func update_portrait():
@@ -56,6 +68,9 @@ func update_portrait():
 		
 
 func _process(delta):
+	if Input.is_action_just_pressed("next_chunk") and awaiting_input:
+		next_chunk()
+		
 	if animating:
 		time_until_next_char -= delta
 		time_until_next_sound -= delta
@@ -73,7 +88,12 @@ func _process(delta):
 			animating = false
 			if emotion != "sleep":
 				$SleepTimer.start(SLEEP_SECONDS)
-
+			if not chunk_buffer.is_empty():
+				awaiting_input = true
+			else:
+				all_chunks_finished.emit()
+				pass
+				
 func _on_text_edit_message_sent(_message):
 	thinking.visible = true
 	emotion = "think"
@@ -95,3 +115,14 @@ func remove_emotion(text:String) -> String:
 		var e = text.substr(1, text.find(">")).rstrip(">")
 		text = text.trim_prefix("<" + e + ">")
 	return text
+	
+func next_chunk():
+	awaiting_input = false
+	var next = chunk_buffer.pop_front()
+	animating = true
+	label.visible_characters = 0
+	label.text = next
+	sound.play()
+	time_until_next_char = TIME_BETWEEN_CHARS
+	time_until_next_sound = SOUND_SPEED
+		

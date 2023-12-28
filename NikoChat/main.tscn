@@ -381,6 +381,7 @@ horizontal_alignment = 1
 [node name="ConnectionManager" type="Node" parent="."]
 script = ExtResource("1_onaeo")
 
+[connection signal="all_chunks_finished" from="Chat/Character" to="Chat/MessageSending/TextEdit" method="_on_character_all_chunks_finished"]
 [connection signal="timeout" from="Chat/Character/SleepTimer" to="Chat/Character" method="_on_sleep_timer_timeout"]
 [connection signal="focus_entered" from="Chat/MessageSending/TextEdit" to="Chat/MessageSending/TextEdit" method="_on_focus_entered"]
 [connection signal="focus_exited" from="Chat/MessageSending/TextEdit" to="Chat/MessageSending/TextEdit" method="_on_focus_exited"]
